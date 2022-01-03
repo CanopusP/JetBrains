@@ -1,0 +1,82 @@
+package cinema
+
+fun main() {
+    // plan of cinema
+    println("Enter the number of rows:")
+    val rows = readLine()!!.toInt()
+    println("Enter the number of seats in each row:")
+    val seats = readLine()!!.toInt()
+    // initial answers
+    var counts = 0
+    var sum = 0
+    // profit calculating  
+    val profit = if (rows * seats <= 60) { rows * seats * 10 } else { 
+        (rows / 2) * seats * 10 + ((rows + 1) / 2) * seats * 8 }
+    // filling cinema plan with empty places
+    val list2D = MutableList(rows) { MutableList(seats + 1) { "S" } }
+    // option for client
+    println("1. Show the seats")
+    println("2. Buy a ticket")
+    println("3. Statistics")
+    println("0. Exit")
+    var options = readLine()!!.toInt()
+    myLoop@ while (options != 0) {
+        //1. Show the seats
+        if (options == 1) {
+            println("Cinema:")
+            print(" ")
+            for (i in 0 until seats) {
+            print(" ${i + 1}")
+            if (i < rows) list2D[i][0] = (i + 1).toString()
+            }
+            println()
+            for (i in 0 until rows) {
+                print(list2D[i].joinToString(" "))
+                println()
+            }        
+        }   
+        //2. Buy a ticket     
+        if (options == 2) {
+            println("Enter a row number:")
+            val rowsB = readLine()!!.toInt()
+            println("Enter a seat number in that row:")
+            val seatsB = readLine()!!.toInt()
+            try {
+                if (list2D[rowsB - 1][seatsB] == "B") {
+                    println("That ticket has already been purchased!")
+                    continue@myLoop
+                    var options = readLine()!!.toInt()
+                } else {
+                    var ticket = 0
+                    ticket = if (rows * seats < 60 ) 10
+                    else if (rows / 2 >= rowsB) 10 else 8
+                    println()
+                    println("Ticket price: $$ticket")
+                    println()
+                    list2D[rowsB - 1][seatsB] = "B"
+                    counts +=1
+                    sum +=ticket
+                }
+            } catch (e: IndexOutOfBoundsException) {
+                println("Wrong input!")
+                continue@myLoop
+            }
+        }
+        if (options == 3) {
+            println("Number of purchased tickets: $counts")
+            val percents = counts * 100.0 / (rows * seats)
+            val solution = String.format("%.2f", percents)
+            println("Percentage: $solution%")            
+            println("Current income: $$sum")
+            println("Total income: $$profit") 
+        } 
+        if (options == 0) {
+            break
+        }        
+        println("1. Show the seats")
+        println("2. Buy a ticket")
+        println("3. Statistics")
+        println("0. Exit")
+        options = readLine()!!.toInt()
+    }
+}
