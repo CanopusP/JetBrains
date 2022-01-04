@@ -1,0 +1,113 @@
+fun main() {
+    // write your code here
+
+    val l = "         "
+    val board = mutableListOf(mutableListOf(l[0],l[1],l[2]), mutableListOf(l[3],l[4],l[5]), mutableListOf(l[6],l[7],l[8]))
+    var n = ""
+    var c = 0
+
+    println("--------")
+            for (i in 0..2) {
+                print("| ")
+                for (j in 0..2) {
+                    val k = board[i][j]
+                    print("$k ")
+                }
+                println("|")
+            }
+            println("--------")
+
+
+    print("Enter the coordinates:")
+    var x = true
+    outer@ while (x) {
+
+        try {
+            val inp = readLine()!!.split(" ")
+            val i = inp[0].toInt() - 1
+            val j = inp[1].toInt() - 1
+            if (board[i][j] == 'X' || board[i][j] == 'O') {
+                println("This cell is occupied! Choose another one!")
+
+            } else {
+                if (c%2 == 0) {
+                    board[i][j] = 'X'
+                    c++
+                } else {
+                    board[i][j] = 'O'
+                    c++
+                }
+
+                println("--------")
+                for (i in 0..2) {
+                    print("| ")
+                    for (j in 0..2) {
+                        val k = board[i][j]
+                        print("$k ")
+                    }
+                    println("|")
+                }
+                println("--------")
+            }
+        } catch (e: IndexOutOfBoundsException) {
+            println("Coordinates should be from 1 to 3!")
+
+        } catch (e: NumberFormatException) {
+            println("You should enter numbers!")
+
+        }
+        val cx = l.count { it == 'X' }
+        val co = l.count { it == 'O' }
+
+        val win01 =  board[0][0] == board[0][1] && board[0][1] == board[0][2]
+        val win02 =  board[0][0] == board[1][1] && board[1][1] == board[2][2]
+        val win03 =  board[0][0] == board[1][0] && board[1][0] == board[2][0]
+        val win0 = win01 || win02 || win03
+
+        val win11 =  board[1][0] == board[1][1] && board[1][1] == board[1][2]
+        val win12 =  board[0][2] == board[1][1] && board[1][1] == board[2][0]
+        val win13 =  board[0][1] == board[1][1] && board[1][1] == board[2][1]
+        val win1 = win11 || win12 || win13
+
+        val win21 =  board[2][0] == board[2][1] && board[2][1] == board[2][2]
+        val win22 =  board[0][2] == board[1][2] && board[1][2] == board[2][2]
+        val win2 = win21 || win22
+
+
+        val win = mutableListOf(win0, win1, win2)
+        if (board.toString().contains(' ')) {
+                for (i in 0..2) {
+                    if (win[i] && board[i][i].toString().contains('X')) {
+                        println("X wins")
+                        break@outer
+                    } else if (win[i] && board[i][i].toString().contains('O')) {
+                        println("O wins")
+                        break@outer
+                    }
+                }
+        }
+        if (!(board.toString().contains(' '))) {
+                for (i in 0..2) {
+                    if (win[i] && board[i][i].toString().contains('X')) {
+                        println("X wins")
+                        break@outer
+                    } else if (win[i] && board[i][i].toString().contains('O')) {
+                        println("O wins")
+                        break@outer
+                    }
+                }
+
+            if (true !in win){
+                println("Draw")
+                break@outer
+            }
+        }
+        print("Enter the coordinates: ")
+    }
+    for (i in board) {
+        for (j in i) {
+            val k = j
+            n = n + k
+        }
+    }
+}
