@@ -1,0 +1,110 @@
+package converter
+import kotlin.math.*
+import java.math.BigDecimal
+import java.math.RoundingMode
+
+const val lst = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+fun main() {
+    do {
+        println("Enter two numbers in format: {source base} {target base} (To quit type /exit)")
+        val source_target_bases = readLine()!!
+        if (source_target_bases != "/exit") {
+            val s = source_target_bases.split(" ")
+            val sourceBase = s[0].toInt()
+            val targetBase = s[1].toInt()
+            println("Enter number in base $sourceBase to convert to base $targetBase (To go back type /back)")
+            var number = readLine()!!
+            while (number != "/back") {
+                print("Conversion result: ")
+                println(tenton(targetBase, ntoten (sourceBase, number)))
+                println("Enter number in base $sourceBase to convert to base $targetBase (To go back type /back)")
+                number = readLine()!!
+            }
+        }
+    } while (source_target_bases != "/exit")
+
+}
+
+fun ntoten (base: Int, number: String): String {
+    var inter = ""
+    var dec = ""
+    if (number.contains('.')) {
+        inter = number.substringBefore('.')
+        dec = number.substringAfter('.')
+    } else {
+        inter = number
+    } //splitting to integer and decimal parts
+    var tenthInt = 0.toBigInteger()
+    var tenthDec = 0.toBigDecimal()
+    var c = 0
+    val reversedInter = inter.reversed()
+    for (i in 0..reversedInter.length-1) {
+        val toTenth = (lst.indexOf(reversedInter[i].toUpperCase())).toBigInteger()
+        var pow = BigDecimal.valueOf(base.toDouble().pow(c.toDouble())).toBigInteger()
+        var k = toTenth*pow
+        tenthInt = tenthInt + k
+        c++
+    }
+
+    c = 1
+    for (i in 0..dec.length-1) {
+        val toTenth = (lst.indexOf(dec[i].toUpperCase())).toBigDecimal() // 1
+        var pow = BigDecimal.valueOf(base.toDouble().pow(c.toDouble())) // 1 / 2
+        var k = toTenth.divide(pow, 5, RoundingMode.CEILING)
+        tenthDec = tenthDec + k
+        c++
+    }
+    var a = (tenthInt.toBigDecimal() + tenthDec).toString()
+    return a
+}
+
+fun tenton (base: Int, number: String): String {
+    var inter = 0.toBigDecimal()
+    var dec = 0.toBigDecimal()
+    if (number.contains('.')) {
+        inter = number.toBigDecimal() / 1.toBigDecimal()
+        dec = number.toBigDecimal() % 1.toBigDecimal()
+    } else {
+        inter = number.toBigDecimal()
+    } //splitting to integer and decimal parts
+
+
+    var l = ""
+    var a = ""
+
+    var n = inter.toBigInteger()
+    while (n >= base.toBigInteger()) {
+        val rem = n % base.toBigInteger()
+        n = n / base.toBigInteger()
+        val k = lst[rem.toInt()]
+        l = "$l$k"
+    }
+    val k = lst[n.toInt()]
+    l = "$l$k"
+    l = l.reversed() // integer part without scaling
+
+    var w = ""
+    var id1 = dec // 0.2525
+    for (count in 0..4) {
+        id1 = id1 * base.toBigDecimal() // 0.5 * 5 = 2.5
+        var i = id1.toBigInteger() / 1.toBigInteger() // 2
+        id1 = (id1 % 1.toBigDecimal()) // 0.5
+        if (id1 > base.toBigDecimal()) {
+            w = "$w$i"
+        } else {
+            var u = lst[i.toInt()] // "2"
+            w ="$w$u"
+        }
+        
+    }
+    //var q = "0.$w".toBigDecimal().setScale(5,RoundingMode.FLOOR)
+    //w = "$q".substringAfter(".")
+    if (number.contains('.')) {
+        a = "$l.$w"
+        
+    } else {
+        a = "$l"
+    }
+    return a
+}
