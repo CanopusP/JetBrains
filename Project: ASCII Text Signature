@@ -1,1 +1,220 @@
+package signature
+import java.io.File
+
+fun main() {
+    val alph = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    //name
+    val fileNamer = "D:\\roman.txt"
+    val roman = mutableListOf<String>()
+    File(fileNamer).forEachLine { roman.add(it) }
+    var liner1 = ""
+    var liner2 = ""
+    var liner3 = ""
+    var liner4 = ""
+    var liner5 = ""
+    var liner6 = ""
+    var liner7 = ""
+    var liner8 = ""
+    var liner9 = ""
+    var liner10 = ""
+    println("Enter name and surname: ")
+    val name = readLine()!!
+    for (i in 0..name.length - 1) {
+        for (j in 0..alph.length - 1) {
+            if (name[i] == alph[j]) {
+                val k = 2 + j * 11
+                liner1 += roman[k]
+                liner2 += roman[k + 1]
+                liner3 += roman[k + 2]
+                liner4 += roman[k + 3]
+                liner5 += roman[k + 4]
+                liner6 += roman[k + 5]
+                liner7 += roman[k + 6]
+                liner8 += roman[k + 7]
+                liner9 += roman[k + 8]
+                liner10 += roman[k + 9]
+            }
+        }
+        if (name[i] == ' ') {
+            liner1 += "          "
+            liner2 += "          "
+            liner3 += "          "
+            liner4 += "          "
+            liner5 += "          "
+            liner6 += "          "
+            liner7 += "          "
+            liner8 += "          "
+            liner9 += "          "
+            liner10 += "          "
+        }
+    }
+
+    //position
+    val fileNamem = "D:\\medium.txt"
+    val medium = mutableListOf<String>()
+    File(fileNamem).forEachLine { medium.add(it) }
+    var linem1 = ""
+    var linem2 = ""
+    var linem3 = ""
+    println("Enter person's status: ")
+    val position = readLine()!!
+    for (i in 0..position.length - 1) {
+        for (j in 0..alph.length - 1) {
+            if (position[i] == alph[j]) {
+                val k = 2 + j * 4
+                linem1 += medium[k]
+                linem2 += medium[k + 1]
+                linem3 += medium[k + 2]
+            }
+        }
+        if (position[i] == ' ') {
+            linem1 += "     "
+            linem2 += "     "
+            linem3 += "     "
+        }
+    }
+
+    // display result
+    val ln = liner10.length - 1
+    val nn = linem3.length - 1
+    if (ln > nn) {
+        if (nn % 2 == 1 && ln % 2 == 0) {
+            val hdbt = "8".repeat(ln + 9)
+            println("$hdbt")
+            println("88  " + liner1 + "  88")
+            println("88  " + liner2 + "  88")
+            println("88  " + liner3 + "  88")
+            println("88  " + liner4 + "  88")
+            println("88  " + liner5 + "  88")
+            println("88  " + liner6 + "  88")
+            println("88  " + liner7 + "  88")
+            if (!(liner8.isBlank())) {
+                println("88  " + liner8 + "  88")
+            }
+            if (!(liner9.isBlank())) {
+                println("88  " + liner9 + "  88")
+            }
+            if (!(liner10.isBlank())) {
+                println("88  " + liner10 + "  88")
+            }
+            println("88  " + " ".repeat(ln + 1) + "  88")
+            println("88  " + " ".repeat(ln + 1) + "  88")
+            println("88  " + " ".repeat(ln + 1) + "  88")
+            println("88" + " ".repeat((ln - nn + 4)/2) + linem1 + " ".repeat((ln - nn + 5)/2) + "88")
+            println("88" + " ".repeat((ln - nn + 4)/2) + linem2 + " ".repeat((ln - nn + 5)/2) + "88")
+            println("88" + " ".repeat((ln - nn + 4)/2) + linem3 + " ".repeat((ln - nn + 5)/2) + "88")
+            println("$hdbt")
+        } else if (nn % 2 == 0 && ln % 2 == 1) {
+            val hdbt = "8".repeat(ln + 9)
+            println("$hdbt")
+            println("88  " + liner1 + "  88")
+            println("88  " + liner2 + "  88")
+            println("88  " + liner3 + "  88")
+            println("88  " + liner4 + "  88")
+            println("88  " + liner5 + "  88")
+            println("88  " + liner6 + "  88")
+            println("88  " + liner7 + "  88")
+            if (!(liner8.isBlank())) {
+                println("88  " + liner8 + "  88")
+            }
+            if (!(liner9.isBlank())) {
+                println("88  " + liner9 + "  88")
+            }
+            if (!(liner10.isBlank())) {
+                println("88  " + liner10 + "  88")
+            }
+            println("88  " + " ".repeat(ln + 1) + "  88")
+            println("88  " + " ".repeat(ln + 1) + "  88")
+            println("88  " + " ".repeat(ln + 1) + "  88")
+            println("88  " + " ".repeat((ln - nn - 1)/2) + linem1 + " ".repeat((ln - nn + 1)/2) + "  88")
+            println("88  " + " ".repeat((ln - nn - 1)/2) + linem2 + " ".repeat((ln - nn + 1)/2) + "  88")
+            println("88  " + " ".repeat((ln - nn - 1)/2) + linem3 + " ".repeat((ln - nn + 1)/2) + "  88")
+            println("$hdbt")
+        }
+        else {
+            val hdbt = "8".repeat(ln + 9)
+            println("$hdbt")
+            println("88  " + liner1 + "  88")
+            println("88  " + liner2 + "  88")
+            println("88  " + liner3 + "  88")
+            println("88  " + liner4 + "  88")
+            println("88  " + liner5 + "  88")
+            println("88  " + liner6 + "  88")
+            println("88  " + liner7 + "  88")
+            if (!(liner8.isBlank())) {
+                println("88  " + liner8 + "  88")
+            }
+            if (!(liner9.isBlank())) {
+                println("88  " + liner9 + "  88")
+            }
+            if (!(liner10.isBlank())) {
+                println("88  " + liner10 + "  88")
+            }
+            println("88  " + " ".repeat(ln + 1) + "  88")
+            println("88  " + " ".repeat(ln + 1) + "  88")
+            println("88  " + " ".repeat(ln + 1) + "  88")
+            println("88  " + " ".repeat((ln - nn + 1)/2) + linem1 + " ".repeat((ln - nn + 1)/2) + "  88")
+            println("88  " + " ".repeat((ln - nn + 1)/2) + linem2 + " ".repeat((ln - nn + 1)/2) + "  88")
+            println("88  " + " ".repeat((ln - nn + 1)/2) + linem3 + " ".repeat((ln - nn + 1)/2) + "  88")
+            println("$hdbt")
+        }
+
+    } else {
+        if (nn % 2 == 0 && ln % 2 == 1 || nn % 2 == 1 && ln % 2 == 0) {
+            val hdbt = "8".repeat(nn + 9)
+            val sp = " ".repeat((nn - ln)/2)
+            println("$hdbt")
+            println("88  " + sp + liner1 + sp + "   88")
+            println("88  " + sp + liner2 + sp + "   88")
+            println("88  " + sp + liner3 + sp + "   88")
+            println("88  " + sp + liner4 + sp + "   88")
+            println("88  " + sp + liner5 + sp + "   88")
+            println("88  " + sp + liner6 + sp + "   88")
+            println("88  " + sp + liner7 + sp + "   88")
+            if (!(liner8.isBlank()))  {
+                println("88  " + sp + liner8 + sp + "   88")
+            }
+            if (!(liner9.isBlank())) {
+                println("88  " + sp + liner9 + sp + "   88")
+            }
+            if (!(liner10.isBlank())) {
+                println("88  " + sp + liner10 + sp + "   88")
+            }
+            println("88  " + " ".repeat(nn + 1) + "  88")
+            println("88  " + " ".repeat(nn + 1) + "  88")
+            println("88  " + " ".repeat(nn + 1) + "  88")
+            println("88  " + linem1 + "  88")
+            println("88  " + linem2 + "  88")
+            println("88  " + linem3 + "  88")
+            println("$hdbt")
+        } else {
+            val hdbt = "8".repeat(nn + 9)
+            val sp = " ".repeat((nn - ln)/2)
+            println("$hdbt")
+            println("88  " + sp + liner1 + sp + "  88")
+            println("88  " + sp + liner2 + sp + "  88")
+            println("88  " + sp + liner3 + sp + "  88")
+            println("88  " + sp + liner4 + sp + "  88")
+            println("88  " + sp + liner5 + sp + "  88")
+            println("88  " + sp + liner6 + sp + "  88")
+            println("88  " + sp + liner7 + sp + "  88")
+            if (!(liner8.isBlank()))  {
+                println("88  " + sp + liner8 + sp + "  88")
+            }
+            if (!(liner9.isBlank())) {
+                println("88  " + sp + liner9 + sp + "  88")
+            }
+            if (!(liner10.isBlank())) {
+                println("88  " + sp + liner10 + sp + "  88")
+            }
+            println("88  " + " ".repeat(nn + 1) + "  88")
+            println("88  " + " ".repeat(nn + 1) + "  88")
+            println("88  " + " ".repeat(nn + 1) + "  88")
+            println("88  " + linem1 + "  88")
+            println("88  " + linem2 + "  88")
+            println("88  " + linem3 + "  88")
+            println("$hdbt")
+        }
+    }
+}
 
