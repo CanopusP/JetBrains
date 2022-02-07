@@ -126,9 +126,9 @@ fun main() {
             println("88  " + " ".repeat(ln + 1) + "  88")
             println("88  " + " ".repeat(ln + 1) + "  88")
             println("88  " + " ".repeat(ln + 1) + "  88")
-            println("88  " + " ".repeat((ln - nn - 1)/2) + linem1 + " ".repeat((ln - nn + 1)/2) + "  88")
-            println("88  " + " ".repeat((ln - nn - 1)/2) + linem2 + " ".repeat((ln - nn + 1)/2) + "  88")
-            println("88  " + " ".repeat((ln - nn - 1)/2) + linem3 + " ".repeat((ln - nn + 1)/2) + "  88")
+            println("88  " + " ".repeat((ln - nn)/2) + linem1 + " ".repeat((ln - nn + 2)/2) + "  88")
+            println("88  " + " ".repeat((ln - nn)/2) + linem2 + " ".repeat((ln - nn + 2)/2) + "  88")
+            println("88  " + " ".repeat((ln - nn)/2) + linem3 + " ".repeat((ln - nn + 2)/2) + "  88")
             println("$hdbt")
         }
         else {
@@ -153,9 +153,9 @@ fun main() {
             println("88  " + " ".repeat(ln + 1) + "  88")
             println("88  " + " ".repeat(ln + 1) + "  88")
             println("88  " + " ".repeat(ln + 1) + "  88")
-            println("88  " + " ".repeat((ln - nn + 1)/2) + linem1 + " ".repeat((ln - nn + 1)/2) + "  88")
-            println("88  " + " ".repeat((ln - nn + 1)/2) + linem2 + " ".repeat((ln - nn + 1)/2) + "  88")
-            println("88  " + " ".repeat((ln - nn + 1)/2) + linem3 + " ".repeat((ln - nn + 1)/2) + "  88")
+            println("88  " + " ".repeat((ln - nn)/2) + linem1 + " ".repeat((ln - nn)/2) + "  88")
+            println("88  " + " ".repeat((ln - nn)/2) + linem2 + " ".repeat((ln - nn)/2) + "  88")
+            println("88  " + " ".repeat((ln - nn)/2) + linem3 + " ".repeat((ln - nn)/2) + "  88")
             println("$hdbt")
         }
 
@@ -217,4 +217,3 @@ fun main() {
         }
     }
 }
-
