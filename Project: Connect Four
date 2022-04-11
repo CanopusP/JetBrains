@@ -1,0 +1,374 @@
+package connectfour
+
+fun main() {
+    println("Connect Four")
+    println("First player's name:")
+    val player1 = readLine()!!
+    println("Second player's name:")
+    val player2 = readLine()!!
+    var check = true
+    var rows = ""
+    var columns = ""
+    var a = mutableListOf<MutableList<String>>()
+    do {
+        println("Set the board dimensions (Rows x Columns)")
+        println("Press Enter for default (6 x 7)")
+        val inp = readLine()!!.uppercase()
+        val regex = Regex("""^\s*\d+\s*[xX]{1}\s*\d+\s*${'$'}""")
+        if (inp.matches(regex)) {
+            rows = inp.substringBefore("X").replace(" ","").replace("\t", "")
+            columns =inp.substringAfter("X").replace(" ","").replace("\t", "")
+            if (rows.isNotEmpty() && columns.isNotEmpty()) {
+                if (rows.toInt() > 9 || rows.toInt() < 5) {
+                    println("Board rows should be from 5 to 9")
+                } else if (columns.toInt() > 9 || columns.toInt() < 5) {
+                    println("Board columns should be from 5 to 9")
+                } else {
+                    check = false
+                }
+            } else {
+                println("Invalid input")
+            }
+        } else if (inp.isEmpty()) {
+            rows = "6"
+            columns = "7"
+            check = false
+        }
+        else {
+            println("Invalid input")
+        }
+    } while (check)
+
+    var gcheck = true
+    var gamesin = 0
+    do {
+        println("Do you want to play single or multiple games?")
+        println("For a single game, input 1 or press Enter")
+        println("Input a number of games:")
+        val inp = readLine()!!
+        try {
+            if (inp.isEmpty() || inp.toInt() == 1) {
+            gamesin = 1
+            gcheck = false
+            } else if (inp.toInt() > 1) {
+                gamesin = inp.toInt()
+                gcheck = false
+            } else if (inp.toInt() < 1) {
+                println("Invalid input")
+            }
+        } catch (e: NumberFormatException) {
+            println("Invalid input")
+        }
+    } while (gcheck)
+    var score1 = 0
+    var score2 = 0
+    println("$player1 VS $player2")
+    println("$rows X $columns board")
+    if (gamesin == 1) {
+        println("Single game")
+        a = board(columns, rows)
+        for (l in 0 until a.size) {
+            println(a[l].joinToString(""))
+        }
+    } else {
+        println("Total $gamesin games")
+        println("Game #1")
+        a = board(columns, rows)
+        for (l in 0 until a.size) {
+            println(a[l].joinToString(""))
+        }
+    }
+    var games = 1
+    var trcheck1 = true
+    var trcheck2 = false
+    loopend@ while (games <= gamesin) {
+        var win = false
+        if (games !=1) {
+            println("Game #$games")
+            for (i in 1..columns.toInt()) {
+                print(" $i")
+            }
+            println("")
+            for (l in 0 until a.size) {
+                println(a[l].joinToString(""))
+            }
+        }
+        loop@ while (!win) {
+            while (trcheck1) {
+                println("$player1's turn:")
+                val turn = readLine()!!
+                if (turn.all { Character.isDigit(it) }) {
+                    if (turn.toInt() > columns.toInt() || turn.toInt() < 1) {
+                        println("The column number is out of range (1 - $columns)")
+                    } else {
+                        for (i in a.size - 1 downTo 0) {
+                            if (i == 0 && a[0][turn.toInt() - 1] != "║ ") {
+                                println("Column $turn is full")
+                            } else if (a[i][turn.toInt() - 1] == "║ ") {
+                                val c = 'o'
+                                a[i][turn.toInt() - 1] = "║$c"
+                                for (i in 1..columns.toInt()) {
+                                    print(" $i")
+                                }
+                                println("")
+                                for (l in 0 until a.size) {
+                                    println(a[l].joinToString(""))
+                                }
+                                if (checkrows(a, c, columns, rows) || checkcolumns(a, c, columns, rows) || checkdiag(a, c, columns, rows) || checkdiagop(a, c, columns, rows)
+                                ) {
+                                    println("Player $player1 won")
+                                    println("Score")
+                                    win = true
+                                    score1 = score1 + 2
+                                    println("$player1: $score1 $player2: $score2")
+                                    for (i in 0..rows.toInt() - 1) {
+                                        for (j in 0..columns.toInt() - 1) {
+                                            a[i][j] = "║ "
+                                        }
+                                    }
+                                    trcheck1 = false
+                                    trcheck2 = true
+                                    break@loop
+                                } else if (draw(a, columns, rows)) {
+                                    win = true
+                                    for (i in 0..rows.toInt() - 1) {
+                                        for (j in 0..columns.toInt() - 1) {
+                                            a[i][j] = "║ "
+                                        }
+                                    }
+                                    println("It is a draw")
+                                    score1 = score1 + 1
+                                    score2 = score2 + 1
+                                    println("Score")
+                                    println("$player1: $score1 $player2: $score2")
+                                    trcheck1 = false
+                                    trcheck2 = true
+                                    break@loop
+                                }
+                                trcheck1 = false
+                                trcheck2 = true
+                                break
+                            }
+                        }
+                    }
+                } else if (turn == "end") {
+                    win = true
+                    break@loopend
+                } else {
+                    println("Incorrect column number")
+                }
+            }
+
+            while (trcheck2) {
+                println("$player2's turn:")
+                val turn = readLine()!!
+                if (turn.all { Character.isDigit(it) }) {
+                    if (turn.toInt() > columns.toInt() || turn.toInt() < 1) {
+                        println("The column number is out of range (1 - $columns)")
+                    } else {
+                        for (i in a.size - 1 downTo 0) {
+                            if (i == 0 && a[0][turn.toInt() - 1] != "║ ") {
+                                println("Column $turn is full")
+                            } else if (a[i][turn.toInt() - 1] == "║ ") {
+                                val c = '*'
+                                a[i][turn.toInt() - 1] = "║$c"
+                                for (i in 1..columns.toInt()) {
+                                    print(" $i")
+                                }
+                                println("")
+                                for (l in 0 until a.size) {
+                                    println(a[l].joinToString(""))
+                                }
+                                if (checkrows(a, c, columns, rows) || checkcolumns(a, c, columns, rows) || checkdiag(a, c, columns, rows) || checkdiagop(a, c, columns, rows)
+                                ) {
+                                    println("Player $player2 won")
+                                    win = true
+                                    for (i in 0..rows.toInt() - 1) {
+                                        for (j in 0..columns.toInt() - 1) {
+                                            a[i][j] = "║ "
+                                        }
+                                    }
+                                    score2 = score2 + 2
+                                    println("Score")
+                                    println("$player1: $score1 $player2: $score2")
+                                    trcheck2 = false
+                                    trcheck1 = true
+                                    break@loop
+                                } else if (draw(a, columns, rows)) {
+                                    win = true
+                                    for (i in 0..rows.toInt() - 1) {
+                                        for (j in 0..columns.toInt() - 1) {
+                                            a[i][j] = "║ "
+                                        }
+                                    }
+                                    println("It is a draw")
+                                    score1 = score1 + 1
+                                    score2 = score2 + 1
+                                    println("Score")
+                                    println("$player1: $score1 $player2: $score2")
+                                    trcheck2 = false
+                                    trcheck1 = true
+                                    break@loop
+                                }
+                                trcheck2 = false
+                                trcheck1 = true
+                                break
+                            }
+                        }
+                    }
+                } else if (turn == "end") {
+                    win = true
+                    break@loopend
+                } else {
+                    println("Incorrect column number")
+                }
+
+            }
+        }
+        games++
+    }
+    println("Game over!")
+
+}
+
+fun board(columns: String, rows: String): MutableList<MutableList<String>> {
+    val board = MutableList(0) { mutableListOf<String>() }
+    for (i in 1..columns.toInt()) {
+        print(" $i")
+    }
+    println("")
+    for (j in 1..rows.toInt()) {
+        val r = mutableListOf<String>()
+        for (i in 1..columns.toInt() + 1) {
+            val s = "║ "
+            r.add(s)
+        }
+        board.add(r)
+    }
+    val r = mutableListOf<String>()
+    var s = "╚"
+    r.add(s)
+    for (i in 2..2*columns.toInt()) {
+        if (i%2 == 0) {
+            s = "═"
+            r.add(s)
+        } else {
+            s = "╩"
+            r.add(s)
+        }
+    }
+    s = "╝"
+    r.add(s)
+    board.add(r)
+    return board
+}
+
+fun checkrows(a:MutableList<MutableList<String>>, c: Char, columns: String, rows: String):Boolean {
+    var win = false
+    var count = 1
+    for (i in 0..rows.toInt() - 1) {
+        for  (j in 0.. columns.toInt() - 2) {
+            if (a[i][j] == a[i][j+1] && a[i][j] == "║$c") {
+                count++
+                if (count > 3) {
+                    win = true
+                }
+            } else {
+                count = 1
+            }
+        }
+    }
+    return win
+}
+
+fun checkcolumns(a:MutableList<MutableList<String>>, c: Char, columns: String, rows: String):Boolean {
+    var win = false
+    var count = 1
+    for (j in 0..columns.toInt() - 1) {
+        for (i in 0..rows.toInt() - 1 ) {
+            if (a[i][j] == a[i+1][j] && a[i][j] == "║$c") {
+                count++
+                if (count > 3) {
+                    win = true
+                }
+            } else {
+                count = 1
+            }
+        }
+    }
+    return win
+}
+
+fun checkdiag(a:MutableList<MutableList<String>>, c: Char, columns: String, rows: String):Boolean {
+    var win = false
+    loop1@ for (l in 0..rows.toInt() - 2){ // l = 0
+        if (win) {
+            break
+        } else {
+            var count = 1
+            for (m in 0..columns.toInt() - 2) { // m = 0
+                loop@ for (j in m..columns.toInt() - 2) { // j = 0
+                    for (i in j..rows.toInt() - 2) { // i = 0
+                        if (a[i][j] == a[i + 1][j + 1] && a[i][j] == "║$c") { // a[0][0] == a[1][1]
+                            count++
+                            if (count > 3) {
+                                win = true
+                                break@loop1
+                            }
+                        } else {
+                            count = 1
+                        }
+
+                        break@loop
+                    }
+                }
+            }
+        }
+    }
+    return win
+}
+
+fun checkdiagop(a:MutableList<MutableList<String>>, c: Char, columns: String, rows: String):Boolean {
+    var win = false
+    loop1@ for (l in 0..rows.toInt() - 1){ // l = 0
+        if (win) {
+            break
+        } else {
+            var count = 1
+            for (m in 0..columns.toInt() - 2) { // m = 0
+                loop@ for (j in m..columns.toInt() - 2) { // j = 0
+                    for (i in (rows.toInt() - j) downTo 0) { // i = 5
+                        if (a[i][j] == a[i - 1][j + 1] && a[i][j] == "║$c") { // a[0][0] == a[1][1]
+                            count++
+                            if (count > 3) {
+                                win = true
+                                break@loop1
+                            }
+                        } else {
+                            count = 1
+                        }
+
+                        break@loop
+                    }
+                }
+            }
+        }
+    }
+    return win
+}
+
+fun draw(a:MutableList<MutableList<String>>, columns: String, rows: String):Boolean {
+    var draw = false
+    var count = 0
+    for (j in 0..columns.toInt() - 2) {
+        for (i in 0..rows.toInt() - 1) {
+            if (a[i][j] == "║ ") {
+               count++
+            }
+        }
+    }
+    if (count == 0) {
+        draw = true
+    }
+    return draw
+}
